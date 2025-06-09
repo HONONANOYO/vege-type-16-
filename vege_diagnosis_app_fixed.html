@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ベジタイプ診断</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+      margin: 0;
+    }
+    h1 {
+      font-size: 1.8rem;
+    }
+    button {
+      display: block;
+      width: 80%;
+      max-width: 300px;
+      margin: 1rem auto;
+      padding: 1rem;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background-color: #f0f0f0;
+    }
+    img {
+      margin-top: 20px;
+      width: 80%;
+      max-width: 300px;
+      border-radius: 12px;
+    }
+    @media (min-width: 768px) {
+      body {
+        padding: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>ベジタイプ診断</h1>
+  <div id="quiz">
+    <p id="question">質問1：一日３食食べていますか？</p>
+    <button id="btn1" onclick="answer('R')">はい</button>
+    <button id="btn2" onclick="answer('I')">いいえ</button>
+  </div>
+
+  <div id="result" style="display:none;">
+    <h2>あなたにぴったりのキャラクターはこちら！</h2>
+    <img id="character" src="" alt="キャラ画像"><br>
+    <p id="approach"></p>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "質問1：一日３食食べていますか？", a: ['R', 'I'], labels: ['はい', 'いいえ'] },
+      { q: "質問2：食事スタイルは？", a: ['C', 'B'], labels: ['自炊中心', '外食・中食中心'] },
+      { q: "質問3：野菜がとれていない理由は？", a: ['T', 'M'], labels: ['時間・手間', 'お金'] },
+      { q: "質問4：野菜を意識して摂っていますか？", a: ['A', 'P'], labels: ['はい', 'いいえ'] }
+    ];
+
+    const resultData = {
+      "RCTA": { image: "images/RCTA.png", approach: "スープに夏野菜を入れて＋α！" },
+      "RCTP": { image: "images/RCTP.png", approach: "トマト・ツナ・塩昆布で簡単おつまみ！" },
+      "RCMA": { image: "images/RCMA.png", approach: "旬野菜を低価格でゲット！" },
+      "RCMP": { image: "images/RCMP.png", approach: "カレーに焼きナス、卵かけごはんにオクラ！" },
+      "RBTA": { image: "images/RBTA.png", approach: "外食時に野菜メニューを選ぼう！" },
+      "RBTP": { image: "images/RBTP.png", approach: "味噌汁を豚汁に、飲み物を野菜ジュースに！" },
+      "RBMA": { image: "images/RBMA.png", approach: "カット野菜＋温野菜で中食をアップグレード！" },
+      "RBMP": { image: "images/RBMP.png", approach: "夜だけ野菜スープをつけてみよう！" },
+      "ICTA": { image: "images/ICTA.png", approach: "1パン作り置きでタイパ重視！" },
+      "ICTP": { image: "images/ICTP.png", approach: "野菜ジュースやスティックで簡単摂取！" },
+      "ICMA": { image: "images/ICMA.png", approach: "炊飯器飯で栄養バランス◎" },
+      "ICMP": { image: "images/ICMP.png", approach: "キーマカレーやミートソースで野菜を！" },
+      "IBTA": { image: "images/IBTA.png", approach: "野菜多めのテイクアウトを意識しよう！" },
+      "IBTP": { image: "images/IBTP.png", approach: "野菜たっぷりハンバーガーで＋野菜！" },
+      "IBMA": { image: "images/IBMA.png", approach: "「1/3野菜」弁当を探してみよう！" },
+      "IBMP": { image: "images/IBMP.png", approach: "冷凍で届く栄養バランス弁当！" }
+    };
+
+    let index = 1;
+    let code = "";
+
+    function answer(letter) {
+      code += letter;
+      if (index < questions.length) {
+        const q = questions[index];
+        document.getElementById("question").innerText = q.q;
+        document.getElementById("btn1").innerText = q.labels[0];
+        document.getElementById("btn2").innerText = q.labels[1];
+        document.getElementById("btn1").onclick = () => answer(q.a[0]);
+        document.getElementById("btn2").onclick = () => answer(q.a[1]);
+        index++;
+      } else {
+        document.getElementById("quiz").style.display = "none";
+        document.getElementById("result").style.display = "block";
+        const result = resultData[code] || { image: "", approach: "結果データがありません" };
+        document.getElementById("character").src = result.image;
+        document.getElementById("approach").innerText = result.approach;
+      }
+    }
+  </script>
+</body>
+</html>
